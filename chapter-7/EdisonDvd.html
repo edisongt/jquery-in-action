@@ -96,12 +96,19 @@
             <label><input type="radio"name="viewed"value="false">No</label>
         </div>
     </div>
-<script src="../js/jquery-1.11.3.min.js"></script>
-<script>
+    <script src="../js/jquery-1.11.3.min.js"></script>
+    <script>
+        var $filters = $('#filters'); //撈取div中類別為filters 集合
+        var templatesAvailable = $('.template', 'templates')
+            .not('.filter-chooser')
+            .length; //取得在div類別為templates且子集合中類別為Template的JQ集合並且不為預設下拉選單
+        var movies;
+        $.getJSON('movies.json', function () {
+            movies = data;
+            $(document).trigger('moviesLoaded');
+        });
+    </script>
 
-
-</script>
-    
 </body>
 
 <!--hidden templates-->
