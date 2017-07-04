@@ -107,6 +107,63 @@
             movies = data;
             $(document).trigger('moviesLoaded');
         });
+
+        $(document).on('moviesLoaded', function () {
+
+            $('#filters').on('change', 'filter-type', function () {
+                var $this = $(this); //這邊是指著filters元素集合中filter-type類別改變時所觸發的元素
+                var $filter = $this.closet('.filter'); //迷之程式碼??=> 該類別為動態產生之類別(在後面的程式碼會附加!)
+                var filtertype = $this.find(':selected').data('template-type'); //撈取該選擇清單的值
+                $('.qualifier', $filter).remove(); //在filter中選出類別為qualifier的資料集合並且移除他!
+                $('div.template.' + filtertype)
+                    .clone()
+                    .addClass('qualifier')
+                    .appendTo($filter);
+                $this.find('option[value="]').remove();
+            }).on('click', 'filter-remover', function () {
+                $(this).closest('.filter').remove();
+            });
+
+            $('#filter-add').click(function () {
+                //Check if the button was pressed before selecting a filter
+                if ($filters.find('template:last .filter-type').val() === '') {
+                    return;
+                }
+
+                //find filters already in use
+                var filterInUse = $filters.children().map(function () {
+                    return $(this).children('.template')
+                        .attr('class').match(/\b(template-.+?)\b/g)[0];
+                }).get();
+
+                //All the filters availabe are already in use
+                if (filterInUse.length === templatesAvailable) {
+                    return;
+                }
+
+
+                var $filterChooser = $('div.template.filter-chooser')
+                    .clone()
+                    .removeClass('filter-chooser')
+                    .addClass('filter');
+
+                // Remove filters already in use
+                $filterChooser
+                    .find('option[data-template-type]')
+                    .filter(function () {
+                        return filterInUse.indexOf($(
+                            this).data(
+                            'template-type'
+                        )) >= 0;
+                    })
+                    .remove();
+                $filterChooser.appendTo($filters);
+
+
+            })
+
+
+        })
     </script>
 
 </body>
