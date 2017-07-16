@@ -25,6 +25,8 @@
          $.each(testPatterns, function () {
             $log.append('<div>' + this + '=' + $.jqiaFormatDate(now, this) + '</div>');
          });
+         $log.append('<div>' + 'this' + '=' + $.jqiaFormatDate(now,'mm') + '</div>');
+                 
       </script>
   </body>
 </html>

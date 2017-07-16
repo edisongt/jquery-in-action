@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-        <meta charset="utf-8" />
+     <meta charset="utf-8" />
         <title>Using deferred.progress() version 2 - jQuery in Action, 3rd edition</title>
         <link rel="stylesheet" href="../css/main.css" />
         <style>
@@ -36,8 +35,8 @@
                 }
         </style>
 </head>
-
 <body>
+    
         <div class="bar">
                 <div class="inner-bar"></div>
                 <span class="progress">0%</span>
@@ -61,12 +60,13 @@
                                         deferred.notify(nextWidth * 100 / $barWidth);
                                         $innerBar.width(nextWidth);
                                         if (nextWidth >= $barWidth) {
-                                                 deferred.reject();
-                                                // deferred.resolve(); //重點在於這一行 他給予了解決的訊號
+                                                //此處加入了狀態
+                                                deferred.resolve(); //重點在於這一行 他給予了解決的訊號
                                                 clearInterval(idInterval);
                                         } else {
-                                                 //重點在於這一行 他給予了解決的訊號
+                                                // deferred.reject();
                                                 // clearInterval(idInterval);
+                                                //  alert(deferred.state());
                                         }
                                 },
                                 milliseconds / 100
@@ -76,17 +76,12 @@
                 }
 
                 $('#run-button').click(function () {
-                        animate(1000)
-                                .progress(function (value) {
-                                        $('.progress').text(Math.floor(value) + '%');
-                                })
-                                .done(function () { //本行的啟動是根據deferred.resolve
-                                        alert('The process is completed');
-                                }).fail(function () {
-                                        alert('The process is notcomplete');
-                                });
+                        animate(1000).then(
+                            function resolve(){alert('The process is completed');},
+                            function reject(){alert('The process is notcomplete');},
+                            function progress(value){$('.progress').text(Math.floor(value) + '%');});
+                               
                 });
         </script>
 </body>
-
 </html>

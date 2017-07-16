@@ -112,7 +112,7 @@
          $contactForm.find('input, textarea').blur(function() {
              var $this = $(this);
 
-             $.ajax('contact.php', {
+             $.ajax('http://localhost/contact.php', {
                  method: 'POST',
                  dataType: 'json',
                  data: $this.serialize() + '&partial=true',
@@ -145,7 +145,7 @@
             event.preventDefault();
 
             $.post(
-                'contact.php',
+                'http://localhost/contact.php',
                 $(this).serialize(),
                 function(data) {
                     if (data.status === 'error') {
